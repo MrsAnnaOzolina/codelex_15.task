@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import './components/App.css'
-import NavList from './components/NavLink';
+// import './components/App.css'
+import NavList from './components/NavList';
 
 
 import ReactDOM from "react-dom/client";
 import { Routes, Route } from "react-router-dom";
+import Home from './components/home'
+import BlogCards  from './components/blogCards';
+import BlogArticles from './components/blogArticle';
 
 
 function App() {
@@ -15,10 +18,16 @@ function App() {
      
        <NavList />
       <Routes>
-          <Route path="/" element={<Home /> }/>
-          <Route  path="characters/" element={<Characters />} />
-          <Route  path="/about" element={<About />} />
-          <Route  path="/characters/:id" element={<DetailedInfoAboutCharacters />} />
+          <Route path="/" 
+           element={<Home /> }
+          />
+          <Route  path="blog/" 
+           element={<BlogCards />}
+           />
+         
+          <Route  path="/blog/:id" 
+           element={<BlogArticles />} 
+          />
       </Routes>
       </div>
   )

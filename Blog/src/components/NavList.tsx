@@ -11,8 +11,11 @@ function NavList() {
   let activeClassName = "underline";
 
   return (
+    <div className="navbar">
+      
     <nav>
-      <ul>
+    <a href="/" className="brand-logo"> Lulu blog</a>
+      <ul className="right hide-on-med-and-down">
         <li>
           <NavLink
             to=""
@@ -35,6 +38,7 @@ function NavList() {
         </li>
       </ul>
     </nav>
+    </div>
   );
 }
 export default NavList
