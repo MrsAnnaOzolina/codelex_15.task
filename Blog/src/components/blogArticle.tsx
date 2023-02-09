@@ -26,7 +26,7 @@ import { useEffect, useRef,useState } from "react";
    }
 
    const Values = {
-    editfield0: "",
+    editfield0: 0 ,
     editfield1: "",
     editfield2: "",
     editfield3: ""
@@ -54,7 +54,7 @@ function BlogArticles() {
         isLoading: loadingPost,
         error: errorPost,
         data: postData,
-      } = useQuery<Posts[]>(['posts', id], () => AxiosFunctionwithId(id!),
+      } = useQuery<Posts>(['posts', id], () => AxiosFunctionwithId(id!),
       {
    
     }

@@ -7,7 +7,11 @@ type Posts ={
     content:string
    }
    
- function AxiosFunctionCreatePost( {title, content, image} ) {
+ function AxiosFunctionCreatePost( {title, content, image} :{
+  image: string,
+  title:string,
+  content:string
+ }){
    return axios.post<Posts>("http://localhost:3004/posts/",{
     title,
     content,

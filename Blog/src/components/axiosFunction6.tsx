@@ -7,7 +7,12 @@ type Posts ={
     content:string
    }
    
- function AxiosFunctionEditPost( {id ,title, content, image} ) {
+ function AxiosFunctionEditPost( {id ,title, content, image}:{
+  id:number,
+  image: string,
+  title:string,
+  content:string
+ }) {
    return axios.put<Posts>(`http://localhost:3004/posts/${id}`,{
     id,
     title,

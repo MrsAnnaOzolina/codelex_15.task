@@ -1,10 +1,9 @@
 import { useQuery, useMutation, QueryClient, useQueryClient } from "@tanstack/react-query"
-import { useState, useRef } from 'react'
+import { useState, useRef, HtmlHTMLAttributes, DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import AxiosFunction from "./axiosFunction"
 import { Link } from "react-router-dom";
 import './home.css'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import AxiosFunctionCreatePost from "./axiosFunction3"
 
 type Posts = {
@@ -17,9 +16,9 @@ type Posts = {
 
 function BlogCards() {
   const [showInput, setShowInput] = useState(false);
-  const imageRef = useRef<React.MutableRefObject<string>>()
-  const titleRef = useRef<React.MutableRefObject<string>>()
-  const contentRef = useRef<React.MutableRefObject<React.MutableRefObject<string | undefined> | undefined>>()
+  const imageRef = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> |undefined>()
+  const titleRef = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
+  const contentRef = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
 
   // const [inputValues, setInputValues] = useState(" ");
 
@@ -42,12 +41,8 @@ function BlogCards() {
     },
   })
 
-  function handleSubmit(e) {
+  function handleSubmit(e: { preventDefault: () => void; }) {
     e.preventDefault();
-    // if (titleRef.current.value === " ") {
-    //     alert("Please fill all fields")
-    //     return
-    // }
 
     createPostMutation.mutate({
       title: titleRef.current.value,
@@ -84,40 +79,27 @@ function BlogCards() {
           onSubmit={handleSubmit}
         >
           <h1>Add New Post</h1>
-          {/* <label><h5>title</h5></label> */}
           <input
             type='text'
             placeholder='Title'
             ref={titleRef}
             maxLength={20!}
             required
-          //  name='inputValues'
-          // value={inputValues}
-          //  onChange={handleChange}
           />
-          {/* <label htmlFor="content"><h5>content</h5></label> */}
           <input
             type='text'
             placeholder='content'
             ref={contentRef}
             required
-          //  name='inputValues'
-          // value={inputValues}
-          //  onChange={handleChange}
           />
            <input
             type='text'
             placeholder='image link'
             ref={imageRef}
             required
-          //  name='inputValues'
-          // value={inputValues}
-          //  onChange={handleChange}
           />
           
           <button
-            // disabled={createPostMutation.isLoading}
-            // onClick={() => newPostMutation.mutate(inputValues)} 
             className='waves-effect waves-light btn'
           >
             Add
