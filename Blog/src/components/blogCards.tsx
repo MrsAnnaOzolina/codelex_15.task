@@ -19,7 +19,7 @@ function BlogCards() {
   const [showInput, setShowInput] = useState(false);
   const imageRef = useRef<React.MutableRefObject<string>>()
   const titleRef = useRef<React.MutableRefObject<string>>()
-  const contentRef = useRef<React.MutableRefObject<string | undefined>>()
+  const contentRef = useRef<React.MutableRefObject<React.MutableRefObject<string | undefined> | undefined>>()
 
   // const [inputValues, setInputValues] = useState(" ");
 
@@ -79,7 +79,7 @@ function BlogCards() {
         >Add new post
         </button>
       </div>
-      <div className='blog_addPost' style={showInput ? { display: "block" } : null}>
+      <div className='blog_addPost' style={showInput ? { display: "block" }: undefined}>
         <form
           onSubmit={handleSubmit}
         >
