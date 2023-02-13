@@ -4,19 +4,18 @@ type Posts ={
     id:number,
     image: string,
     title:string,
-    content:string
+    blogContent:string
    }
    
- function AxiosFunctionEditPost( {id ,title, content, image}:{
+ function AxiosFunctionEditPost( {id ,title, blogContent, image}:{
   id:number,
   image: string,
   title:string,
-  content:string
+  blogContent:string
  }) {
    return axios.put<Posts>(`http://localhost:3004/posts/${id}`,{
-    id,
     title,
-    content,
+    blogContent,
     image
  })
     .then(res => res.data)

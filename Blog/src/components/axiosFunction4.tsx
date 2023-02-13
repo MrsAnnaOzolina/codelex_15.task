@@ -1,14 +1,14 @@
 import axios from "axios";
 
-type Posts ={ 
+type Comments ={ 
     id:number,
-    image: string,
-    title:string,
-    content:string
+    author: string,
+    blogComment:string
+    post_id: number
    }
    
 async function AxiosFunctionwithIDComments( id:string ) {
-    const { data } = await axios.get<Posts[]>(`http://localhost:3004/comments/?postId=${id}`)
+    const { data } = await axios.get<Comments[]>(`http://localhost:3004/comments/${id}`)
     return data
 }
 

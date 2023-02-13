@@ -3,12 +3,13 @@ type Posts ={
     id:number,
     image: string,
     title:string,
-    content:string
+    blogContent:string
    }
    
 async function AxiosFunctionwithID( id:string ) {
-    const { data } = await axios.get<Posts>(`http://localhost:3004/posts/${id}`)
+    const { data } = await axios.get<Posts[]>(`http://localhost:3004/posts/${id}`)
     return data
+    
 }
 
     

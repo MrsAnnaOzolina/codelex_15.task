@@ -4,20 +4,23 @@ type Posts ={
     id:number,
     image: string,
     title:string,
-    content:string
+    blogContent:string
+    file:undefined
    }
    
- function AxiosFunctionCreatePost( {title, content, image} :{
+ const AxiosFunctionCreatePost =  async ( {title, blogContent, image,file} :{
   image: string,
   title:string,
-  content:string
- }){
-   return axios.post<Posts>("http://localhost:3004/posts/",{
+  blogContent:string,
+  file:undefined
+ }) => {
+     await axios.post<Posts>("http://localhost:3004/posts",{
     title,
-    content,
+    blogContent,
     image,
  })
-    .then(res => res.data)
+    // .then(res => res.data)
+    .then(res => console.log(res))
 }
 
     

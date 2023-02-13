@@ -2,19 +2,20 @@ import axios from "axios";
 
 type Comments ={ 
     id:number,
-    commnent:string,
-    postId:number
+    author:string
+    blogCommnent:string,
+    post_id:number
    }
    
- function AxiosFunctionAddComment( {author, comment, postId} :{
+ function AxiosFunctionAddComment( {author, blogComment, post_id} :{
   author:string,
-  comment: string,
-  postId:string
+  blogComment: string,
+  post_id:string
  }) {
    return axios.post<Comments>("http://localhost:3004/comments",{
    author,
-   comment,
-   postId
+   blogComment,
+   post_id
     
  })
     .then(res => res.data)

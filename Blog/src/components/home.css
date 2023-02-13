@@ -56,8 +56,10 @@ p{
 }
 .blog_addPost{
     display: none;
+    margin: 30px;
 }
 .buttonGap{
+    margin-top: 10px;
     margin-bottom: 20px;
     display: flex;
     justify-content:space-between

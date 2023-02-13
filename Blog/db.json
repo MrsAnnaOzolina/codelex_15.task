@@ -32,7 +32,7 @@
     },
     {
       "id": 6,
-      "title": "My day at pool 2 ",
+      "title": "My day at pool 2",
       "content": "I spent all day in Pool. loren ipsum loren ipsum loren ipsumloren ipsum loren ipsum loren ipsum loren ipsum loren ipsum loren ipsum",
       "image": "/src/assets/images/Lulu3.jpg"
     },
@@ -91,6 +91,12 @@
       "comment": "Hi , thanks",
       "postId": "3",
       "id": 8
+    },
+    {
+      "author": "elina",
+      "comment": "super",
+      "postId": "6",
+      "id": 9
     }
   ]
 }

@@ -3,12 +3,12 @@ type Posts ={
     id:number,
     image: string,
     title:string,
-    content:string
+    blogContent:string
    }
    
 async function AxiosFunction() {
-    const { data } = await axios.get<Posts[]>("http://localhost:3004/posts?_sort=id&_order=desc")
+    const { data } = await axios.get<Posts[]>("http://localhost:3004/posts")
     return data
 }
-    
+
 export default AxiosFunction;

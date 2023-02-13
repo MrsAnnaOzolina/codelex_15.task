@@ -16,12 +16,13 @@ import { useEffect, useRef,useState } from "react";
   id:number,
   image: string,
   title:string,
-  content:string
+  blogContent:string
  }
  type Comments={ 
     id: number,
-    comment: string,
-    postId: number
+    author:string,
+    blogComment: string,
+    post_id: number
    
    }
 
@@ -31,6 +32,7 @@ import { useEffect, useRef,useState } from "react";
     editfield2: "",
     editfield3: ""
   }
+
   
 let editedTitle = " "
 let editedContent = " "
@@ -39,11 +41,15 @@ let myid = " "
 
 
 function BlogArticles() {
+    let { id } = useParams<{id:string}>();
     const [showInput, setShowInput] = useState(false);
     const [editfile, setEditFile] = useState(Values)
-    const inputCommentRef = useRef<React.LegacyRef<HTMLInputElement>>();
-    const inputAuthorRef = useRef<React.LegacyRef<HTMLInputElement>>();
-    let { id } = useParams<{id:string}>();
+    const [newComment, setNewComment] = useState({
+      author: "",
+      blogComment: "",
+      post_id: id!
+    })
+    
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -54,7 +60,8 @@ function BlogArticles() {
         isLoading: loadingPost,
         error: errorPost,
         data: postData,
-      } = useQuery<Posts>(['posts', id], () => AxiosFunctionwithId(id!),
+      } = useQuery<Posts[]>(['posts', id], () => AxiosFunctionwithId(id!),
+      
       {
    
     }
@@ -76,10 +83,10 @@ function BlogArticles() {
         if (postData) {
           // mutate data if you need to
           setEditFile({
-            editfield0: postData.id,
-        editfield1: postData.title,
-        editfield2: postData.content,
-        editfield3: postData.image
+            editfield0: postData[0].id,
+        editfield1: postData[0].title,
+        editfield2: postData[0].blogContent,
+        editfield3: postData[0].image
           })
         }
       }, [postData])
@@ -91,18 +98,25 @@ function BlogArticles() {
             queryClient.invalidateQueries(["comments"])
         },
     })
-    function handleSubmit(e){
-        e.preventDefault();
-        addNewCommentMutation.mutate({
-            author: inputAuthorRef.current.value,
-            comment: inputCommentRef.current.value,
-            postId: id
-        })
-   
-         inputCommentRef.current.value = "";
-         inputAuthorRef.current.value = "";
 
+    const  handleCommentSubmit = async (e: { preventDefault: () => void; }) => {
+      e.preventDefault();
+      try {
+       await  addNewCommentMutation.mutate(newComment)
+      
+      } catch(err){
+        console.log(err)
+      }
+      setNewComment({
+        author: "",
+        blogComment: "",
+        post_id: id!
+      });
     }
+    const handleCommentChange = (e:any) => {
+      setNewComment(prev => ({...prev, [e.target.name]: e.target.value}));
+    };
+
 
     const handleInputChange = (g:any) => {
         const target = g.target;
@@ -124,19 +138,30 @@ const updateDataWithMutation = useMutation({
     },
 })
 
-function saveChangesSubmit(e:any){
-
+const  saveChangesSubmit = async (e:any) => {
     e.preventDefault();
-    updateDataWithMutation.mutate({
-        id: editfile.editfield0,
-        title: editfile.editfield1,
-        content: editfile.editfield2,
-        image: editfile.editfield3
-    })
+try {
+  updateDataWithMutation.mutate({
+    id: editfile.editfield0,
+    title: editfile.editfield1,
+    blogContent: editfile.editfield2,
+    image: editfile.editfield3,
+})
+}catch(err){
+  console.log(err)
+}
+   
     setShowInput(false);
-
+}
+const handleDeletePost = async (a:string) => { 
+try{
+  await axios.delete(`http://localhost:3004/posts/${a}`);
+  goBack();
+} catch(err){
+  console.log(err)
 }
 
+}
 
 
 if (loadingPost) return <div>Loading...</div>
@@ -193,13 +218,13 @@ if (errorPostComments|| !commentsData) return <div>Error!</div>
             }
             </div>
 <div className="blogArticle__imageAndTitle">
-    <img src={postData.image}  width="300px"/>
-  <h1>{postData.title}</h1>
+    <img src={postData[0].image}  width="300px"/>
+  <h1>{postData[0].title}</h1>
   </div>
-    <p>{postData.content}</p>
+    <p>{postData[0].blogContent}</p>
     <h6 style={{textDecoration: "underline", color: "grey"}}>Comments:</h6>
     <div>{commentsData?.map( allComments => {
-        return <div key={allComments.id}><p style={{fontWeight: "bold"}}>{allComments.author}: </p> <p className="brown-text text-lighten-3 gap">{allComments.comment}</p></div> 
+        return <div key={allComments.id}><p style={{fontWeight: "bold"}}>{allComments.author}: </p> <p className="brown-text text-lighten-3 gap">{allComments.blogComment}</p></div> 
       }) 
     }
     </div>
@@ -207,15 +232,18 @@ if (errorPostComments|| !commentsData) return <div>Error!</div>
     <h6>You can add your comment here:</h6>
     <div className="blogArticle__comment">
         <form 
-        onSubmit={handleSubmit}
+        onSubmit={handleCommentSubmit}
         >
             <div className="blogArticle__commentLine">
               <label htmlFor="author">Your name</label>
               <input 
             type="text"
             placeholder="author name"
+            name="author"
+            onChange={handleCommentChange}
             required
-            ref={inputAuthorRef}
+            value={newComment.author}
+  
             />
             <label htmlFor="comment">
                 Add your comment here
@@ -223,8 +251,10 @@ if (errorPostComments|| !commentsData) return <div>Error!</div>
             <input 
             type="text"
             placeholder="comments"
+            name="blogComment"
+            onChange={handleCommentChange}
             required
-            ref={inputCommentRef}
+            value={newComment.blogComment}            
             />
             </div>
             <div className="buttonAddNewComment">
@@ -237,6 +267,9 @@ if (errorPostComments|| !commentsData) return <div>Error!</div>
         </form>
     </div>
     </div>
+    <div className="buttonGap">
+        <button className="waves-effect waves-light btn" onClick={()=>{handleDeletePost(id!)}}>Delete post</button>
+      </div>
 </div>
   )
 }
